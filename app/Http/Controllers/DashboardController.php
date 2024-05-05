@@ -15,7 +15,56 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('pages.index');
+        $firestore = new FirestoreClient([
+            'keyFilePath' => __DIR__ . '/very-vali-firebase-adminsdk-ly9ce-45e875d3bd.json'
+        ]);
+
+        // Reference to the proposals collection
+        $proposalsCollection = $firestore->collection('proposals');
+        $responsesCollection = $firestore->collection('responses');
+        $recipientsCollection = $firestore->collection('recipients');
+
+        $totalProposals = $proposalsCollection->documents()->size();
+        $totalResponses = $responsesCollection->documents()->size();
+        $totalRecipients = $recipientsCollection->documents()->size();
+
+        $proposalData = $this->getDataPerDay('proposals', $firestore);
+        $responseData = $this->getDataPerDay('responses', $firestore);
+
+        return view('pages.index',[
+            'totalProposals' => $totalProposals,
+            'totalResponses' => $totalResponses,
+            'totalRecipients' => $totalRecipients,
+            'proposalData' => $proposalData,
+            'responseData' => $responseData
+        ]);
+    }
+
+    private function getDataPerDay($collectionName, $firestore)
+    {
+        // Ambil referensi ke koleksi
+        $collection = $firestore->collection($collectionName);
+
+        // Ambil data proposal/response
+        $documents = $collection->documents();
+
+        // Array untuk menyimpan jumlah proposal/response per hari
+        $dataPerDay = [];
+
+        // Iterasi setiap dokumen
+        foreach ($documents as $document) {
+            // Ambil tanggal dokumen
+            $timestamp = $document->createTime()->get()->format('Y-m-d');
+
+            // Tambahkan jumlah proposal/response ke data per hari
+            if (isset($dataPerDay[$timestamp])) {
+                $dataPerDay[$timestamp]++;
+            } else {
+                $dataPerDay[$timestamp] = 1;
+            }
+        }
+
+        return $dataPerDay;
     }
 
     public function convert(Request $request)

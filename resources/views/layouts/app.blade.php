@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Required meta tags -->
 
-    <title>Carbon Stock Admin</title>
+    <title>Veri Vali Admin</title>
 
 
 

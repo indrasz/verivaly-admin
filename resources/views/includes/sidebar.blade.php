@@ -30,11 +30,31 @@
                     </li>
 
                     <li class="px-0 py-1
+                        {{ request()->is('proposal') || request()->is('proposal/*') ? 'active' : '' }}">
+                         <a href="{{ route('proposal') }}">
+                             <div class="d-flex justify-content-center w-100">
+                                 <i class='bx bx-file'></i>
+                                 <span >Pengusulan</span>
+                             </div>
+                         </a>
+                    </li>
+
+                    <li class="px-0 py-1
+                        {{ request()->is('response') || request()->is('response/*') ? 'active' : '' }}">
+                         <a href="{{ route('response') }}">
+                             <div class="d-flex justify-content-center w-100">
+                                 <i class='bx bx-file'></i>
+                                 <span >Tanggapan</span>
+                             </div>
+                         </a>
+                    </li>
+
+                    <li class="px-0 py-1
                         {{ request()->is('recipient') || request()->is('recipient/*') ? 'active' : '' }}">
                          <a href="{{ route('recipient') }}">
                              <div class="d-flex justify-content-center w-100">
                                  <i class='bx bx-group'></i>
-                                 <span >Recipient</span>
+                                 <span >Manajemen Data</span>
                              </div>
                          </a>
                     </li>
